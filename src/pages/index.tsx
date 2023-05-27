@@ -69,7 +69,15 @@ const Home: NextPage = () => {
           <div className="flex flex-col items-center gap-2">
             <h1 className="text-5xl text-white">Bestem OAuther</h1>
             <h2 className="text-lg text-neutral-200">
-              OAuth 2.0 PKCE Token Generator
+              OAuth 2.0{" "}
+              <a
+                href="https://oauth.net/2/pkce/"
+                className="font-medium underline"
+                target="_blank"
+              >
+                PKCE
+              </a>{" "}
+              Token Generator
             </h2>
           </div>
 
@@ -110,11 +118,11 @@ const Home: NextPage = () => {
         <span className="text-sm text-neutral-500">
           {" "}
           Made by{" "}
-          <a href="https://bestem.dev" className="font-bold">
+          <a href="https://bestem.dev" target="_blank" className="font-bold">
             Bestem
           </a>
         </span>
-        <Link href="https://github.com/bestem-dev/OAuther">
+        <a href="https://github.com/bestem-dev/OAuther" target="_blank">
           <Image
             src="/github.png"
             alt="Github Page"
@@ -122,7 +130,7 @@ const Home: NextPage = () => {
             height={42}
             className="absolute right-0 top-0 m-4 shadow-md hover:scale-110"
           />
-        </Link>
+        </a>
       </main>
     </>
   );

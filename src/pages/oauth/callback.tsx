@@ -114,11 +114,11 @@ const CallbackPage: NextPage = () => {
         <span className="text-sm text-neutral-500">
           {" "}
           Made by{" "}
-          <a href="https://bestem.dev" className="font-bold">
+          <a href="https://bestem.dev" target="_blank" className="font-bold">
             Bestem
           </a>
         </span>
-        <Link href="https://github.com/bestem-dev/OAuther">
+        <a href="https://github.com/bestem-dev/OAuther" target="_blank">
           <Image
             src="/github.png"
             alt="Github Page"
@@ -126,7 +126,7 @@ const CallbackPage: NextPage = () => {
             height={42}
             className="absolute right-0 top-0 m-4 shadow-md hover:scale-110"
           />
-        </Link>
+        </a>
       </main>
     </>
   );
