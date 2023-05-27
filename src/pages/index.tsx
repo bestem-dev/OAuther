@@ -10,6 +10,7 @@ const Home: NextPage = () => {
   const [clientID, setClientID] = useState<string>("");
   const [oauthServer, setOauthServer] = useState<string>("");
   const [scope, setScope] = useState<string>("");
+  const [currentURL, setCurrentURL] = useState<string>("");
   const [pkce, setPkce] = useState<{
     verifier: string;
     challenge: string;
@@ -32,15 +33,12 @@ const Home: NextPage = () => {
     if (scope) {
       setScope(scope);
     }
+    setCurrentURL(getCurrentURL());
   }, []);
 
   const login = useCallback(async () => {
     if (!pkce) return;
-    const currentURL = getCurrentURL();
-    const oauthServer = "https://id.sandbox.btgpactual.com";
     const redirectURL = currentURL + "/oauth/callback";
-    const scope = "openid";
-    // create oauth code challenge
     const codeVerifier = pkce.verifier;
 
     localStorage.setItem("code_verifier", codeVerifier);
@@ -55,36 +53,65 @@ const Home: NextPage = () => {
     console.log(codeVerifier);
     console.log(codeChallenge);
     await router.push(oauthUrl);
-  }, [clientID, router, pkce]);
+  }, [clientID, router, pkce, currentURL, oauthServer, scope]);
 
   return (
     <>
       <Head>
-        <title>Oauther</title>
-        <meta name="description" content="oauth utility" />
+        <title>Bestem OAuther</title>
+        <meta name="description" content="OAuth 2.0 PKCE Token Generator" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-4xl text-white">Oauther</h1>
-          <FieldInput
-            label="Client ID"
-            value={clientID}
-            onChange={setClientID}
-          />
-          <FieldInput
-            label="Oauth Server"
-            value={oauthServer}
-            onChange={setOauthServer}
-          />
-          <FieldInput label="Scope" value={scope} onChange={setScope} />
+          <div className="flex flex-col items-center gap-2">
+            <h1 className="text-5xl text-white">Bestem OAuther</h1>
+            <h2 className="text-lg text-neutral-200">
+              OAuth 2.0 PKCE Token Generator
+            </h2>
+          </div>
+
+          <div className="flex flex-col items-center justify-center gap-4">
+            <FieldInput
+              label="Client ID"
+              value={clientID}
+              onChange={setClientID}
+            />
+            <FieldInput
+              label="OAuth Server"
+              value={oauthServer}
+              placeholder="https://id.example.com"
+              onChange={setOauthServer}
+            />
+            <FieldInput
+              label="Scope"
+              value={scope}
+              placeholder="openid"
+              onChange={setScope}
+            />
+            <p className="mt-2 text-center text-white">
+              Remember to set up your callback url as:
+              <br />
+              <span className="font-bold text-neutral-300 ">
+                {currentURL + "/oauth/callback"}
+              </span>
+            </p>
+          </div>
+
           <button
             onClick={() => void login()}
-            className="w-20 rounded bg-white p-2"
+            className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white"
           >
-            Login
+            Get Token
           </button>
         </div>
+        <span className="text-sm text-neutral-500">
+          {" "}
+          Made by{" "}
+          <a href="https://bestem.dev" className="font-bold">
+            Bestem
+          </a>
+        </span>
       </main>
     </>
   );
@@ -94,7 +121,8 @@ const FieldInput: React.FC<{
   label: string;
   value: string;
   onChange: (value: string) => void;
-}> = ({ label, value, onChange }) => {
+  placeholder?: string;
+}> = ({ label, value, onChange, placeholder }) => {
   return (
     <div className="flex flex-col">
       <label htmlFor="client-id" className="block text-white">
@@ -104,8 +132,9 @@ const FieldInput: React.FC<{
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
         id="client-id"
-        className="block w-96 rounded-sm p-1 text-center"
+        className="my-1 block w-96 rounded-sm border border-transparent px-3 py-2 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600"
       ></input>
     </div>
   );

@@ -1,6 +1,7 @@
 import { getCurrentURL } from "@src/lib/url";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -71,9 +72,18 @@ const CallbackPage: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-4xl text-white">Your Token</h1>
+          <h1 className="text-4xl text-white">Your Token:</h1>
           {fetching && <p className="text-white">Fetching token...</p>}
-          {error && <p className="text-red-500">{error}</p>}
+          {error && (
+            <>
+              <p className="text-red-500">{error}</p>
+              <Link href="/">
+                <button className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white">
+                  Go back
+                </button>
+              </Link>
+            </>
+          )}
           {token && (
             <>
               <div className="max-w-2xl rounded-lg bg-white bg-opacity-20 p-4">
@@ -85,7 +95,7 @@ const CallbackPage: NextPage = () => {
                   setDisplayCopy(true);
                   setTimeout(() => setDisplayCopy(false), 2000);
                 }}
-                className="rounded-md bg-white p-4 py-2 text-black"
+                className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white"
               >
                 Copy token
               </button>
@@ -100,6 +110,13 @@ const CallbackPage: NextPage = () => {
         >
           Token copied!
         </div>
+        <span className="text-sm text-neutral-500">
+          {" "}
+          Made by{" "}
+          <a href="https://bestem.dev" className="font-bold">
+            Bestem
+          </a>
+        </span>
       </main>
     </>
   );
