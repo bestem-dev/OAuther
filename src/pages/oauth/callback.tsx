@@ -1,6 +1,7 @@
 import { getCurrentURL } from "@src/lib/url";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -117,6 +118,15 @@ const CallbackPage: NextPage = () => {
             Bestem
           </a>
         </span>
+        <Link href="https://github.com/bestem-dev/OAuther">
+          <Image
+            src="/github.png"
+            alt="Github Page"
+            width={42}
+            height={42}
+            className="absolute right-0 top-0 m-4 shadow-md hover:scale-110"
+          />
+        </Link>
       </main>
     </>
   );

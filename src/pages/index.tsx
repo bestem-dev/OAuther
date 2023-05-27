@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import getPkce from "oauth-pkce";
 
 import { getCurrentURL } from "../lib/url";
+import Image from "next/image";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const [clientID, setClientID] = useState<string>("");
@@ -112,6 +114,15 @@ const Home: NextPage = () => {
             Bestem
           </a>
         </span>
+        <Link href="https://github.com/bestem-dev/OAuther">
+          <Image
+            src="/github.png"
+            alt="Github Page"
+            width={42}
+            height={42}
+            className="absolute right-0 top-0 m-4 shadow-md hover:scale-110"
+          />
+        </Link>
       </main>
     </>
   );
