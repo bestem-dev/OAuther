@@ -29,8 +29,10 @@ const CallbackPage: NextPage = () => {
       localStorage.getItem("code_verifier") || ""
     );
 
+    const tokenEndpoint = localStorage.getItem("oauth_token_endpoint") || "";
+
     setFetching(true);
-    void fetch("https://id.sandbox.btgpactual.com/oauth2/token", {
+    void fetch(tokenEndpoint, {
       method: "POST",
       body: urlencoded,
       redirect: "manual",

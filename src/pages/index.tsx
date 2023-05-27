@@ -6,11 +6,11 @@ import getPkce from "oauth-pkce";
 
 import { getCurrentURL } from "../lib/url";
 import Image from "next/image";
-import Link from "next/link";
 
 const Home: NextPage = () => {
   const [clientID, setClientID] = useState<string>("");
-  const [oauthServer, setOauthServer] = useState<string>("");
+  const [oauthAuthEndpoint, setOauthAuthEndpoint] = useState<string>("");
+  const [oauthTokenEndpoint, setOauthTokenEndpoint] = useState<string>("");
   const [scope, setScope] = useState<string>("");
   const [currentURL, setCurrentURL] = useState<string>("");
   const [pkce, setPkce] = useState<{
@@ -27,9 +27,13 @@ const Home: NextPage = () => {
     if (clientID) {
       setClientID(clientID);
     }
-    const oauthServer = localStorage.getItem("oauth_server");
+    const oauthServer = localStorage.getItem("oauth_auth_endpoint");
     if (oauthServer) {
-      setOauthServer(oauthServer);
+      setOauthAuthEndpoint(oauthServer);
+    }
+    const oauthTokenEndpoint = localStorage.getItem("oauth_token_endpoint");
+    if (oauthTokenEndpoint) {
+      setOauthTokenEndpoint(oauthTokenEndpoint);
     }
     const scope = localStorage.getItem("scope");
     if (scope) {
@@ -44,18 +48,27 @@ const Home: NextPage = () => {
     const codeVerifier = pkce.verifier;
 
     localStorage.setItem("code_verifier", codeVerifier);
-    localStorage.setItem("oauth_server", oauthServer);
+    localStorage.setItem("oauth_auth_endpoint", oauthAuthEndpoint);
+    localStorage.setItem("oauth_token_endpoint", oauthTokenEndpoint);
     localStorage.setItem("scope", scope);
     localStorage.setItem("client_id", clientID);
 
     const codeChallenge = pkce.challenge;
 
-    const oauthUrl = `${oauthServer}?client_id=${clientID}&response_type=code&redirect_uri=${redirectURL}&scope=${scope}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+    const oauthUrl = `${oauthAuthEndpoint}?client_id=${clientID}&response_type=code&redirect_uri=${redirectURL}&scope=${scope}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
     console.log(oauthUrl);
     console.log(codeVerifier);
     console.log(codeChallenge);
     await router.push(oauthUrl);
-  }, [clientID, router, pkce, currentURL, oauthServer, scope]);
+  }, [
+    clientID,
+    router,
+    pkce,
+    currentURL,
+    oauthAuthEndpoint,
+    oauthTokenEndpoint,
+    scope,
+  ]);
 
   return (
     <>
@@ -88,10 +101,16 @@ const Home: NextPage = () => {
               onChange={setClientID}
             />
             <FieldInput
-              label="OAuth endpoint URL"
-              value={oauthServer}
+              label="OAuth authorization endpoint"
+              value={oauthAuthEndpoint}
               placeholder="https://id.example.com/oauth2/authorize"
-              onChange={setOauthServer}
+              onChange={setOauthAuthEndpoint}
+            />
+            <FieldInput
+              label="OAuth token endpoint"
+              value={oauthTokenEndpoint}
+              placeholder="https://id.example.com/oauth2/token"
+              onChange={setOauthTokenEndpoint}
             />
             <FieldInput
               label="Scope"
@@ -109,7 +128,16 @@ const Home: NextPage = () => {
           </div>
 
           <button
-            onClick={() => void login()}
+            onClick={() => {
+              if (
+                clientID &&
+                oauthAuthEndpoint &&
+                oauthTokenEndpoint &&
+                scope
+              ) {
+                void login();
+              }
+            }}
             className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white"
           >
             Get Token
