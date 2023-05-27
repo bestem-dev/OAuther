@@ -50,7 +50,7 @@ const Home: NextPage = () => {
 
     const codeChallenge = pkce.challenge;
 
-    const oauthUrl = `${oauthServer}/oauth2/authorize?client_id=${clientID}&response_type=code&redirect_uri=${redirectURL}&scope=${scope}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+    const oauthUrl = `${oauthServer}?client_id=${clientID}&response_type=code&redirect_uri=${redirectURL}&scope=${scope}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
     console.log(oauthUrl);
     console.log(codeVerifier);
     console.log(codeChallenge);
@@ -88,9 +88,9 @@ const Home: NextPage = () => {
               onChange={setClientID}
             />
             <FieldInput
-              label="OAuth Server"
+              label="OAuth endpoint URL"
               value={oauthServer}
-              placeholder="https://id.example.com"
+              placeholder="https://id.example.com/oauth2/authorize"
               onChange={setOauthServer}
             />
             <FieldInput
@@ -100,7 +100,7 @@ const Home: NextPage = () => {
               onChange={setScope}
             />
             <p className="mt-2 text-center text-white">
-              Remember to set up your callback url as:
+              Remember to set up your callback URL as:
               <br />
               <span className="font-bold text-neutral-300 ">
                 {currentURL + "/oauth/callback"}
