@@ -177,7 +177,7 @@ const FieldInput: React.FC<{
 }> = ({ name, label, value, onChange, placeholder }) => {
   return (
     <div className="flex flex-col">
-      <label htmlFor="client-id" className="block text-white">
+      <label htmlFor={name} className="block text-white">
         {label}
       </label>
       <input
