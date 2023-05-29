@@ -96,23 +96,27 @@ const Home: NextPage = () => {
 
           <div className="flex flex-col items-center justify-center gap-4">
             <FieldInput
+              name="client_id"
               label="Client ID"
               value={clientID}
               onChange={setClientID}
             />
             <FieldInput
+              name="oauth_auth_endpoint"
               label="OAuth authorization endpoint"
               value={oauthAuthEndpoint}
               placeholder="https://id.example.com/oauth2/authorize"
               onChange={setOauthAuthEndpoint}
             />
             <FieldInput
+              name="oauth_token_endpoint"
               label="OAuth token endpoint"
               value={oauthTokenEndpoint}
               placeholder="https://id.example.com/oauth2/token"
               onChange={setOauthTokenEndpoint}
             />
             <FieldInput
+              name="scope"
               label="Scope"
               value={scope}
               placeholder="openid"
@@ -165,22 +169,24 @@ const Home: NextPage = () => {
 };
 
 const FieldInput: React.FC<{
+  name: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-}> = ({ label, value, onChange, placeholder }) => {
+}> = ({ name, label, value, onChange, placeholder }) => {
   return (
     <div className="flex flex-col">
       <label htmlFor="client-id" className="block text-white">
         {label}
       </label>
       <input
+        name={name}
+        id={name}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        id="client-id"
         className="my-1 block w-96 rounded-sm border border-transparent px-3 py-2 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600"
       ></input>
     </div>
