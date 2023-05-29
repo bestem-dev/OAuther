@@ -77,16 +77,7 @@ const CallbackPage: NextPage = () => {
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-4xl text-white">Your Token:</h1>
           {fetching && <p className="text-white">Fetching token...</p>}
-          {error && (
-            <>
-              <p className="text-red-500">{error}</p>
-              <Link href="/">
-                <button className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white">
-                  Go back
-                </button>
-              </Link>
-            </>
-          )}
+          {error && <p className="text-red-500">{error}</p>}
           {token && (
             <>
               <div className="max-w-2xl rounded-lg bg-white bg-opacity-20 p-4">
@@ -104,6 +95,11 @@ const CallbackPage: NextPage = () => {
               </button>
             </>
           )}
+          <Link href="/">
+            <button className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white">
+              Go back
+            </button>
+          </Link>
         </div>
         <div
           className={
