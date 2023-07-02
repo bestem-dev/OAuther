@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 const CallbackPage: NextPage = () => {
   const router = useRouter();
   const [token, setToken] = useState<string>("");
+  const [refreshToken,setRefreshToken] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [displayCopy, setDisplayCopy] = useState<boolean>(false);
@@ -59,8 +60,10 @@ const CallbackPage: NextPage = () => {
         if (!response) return;
         const data = (await response.json()) as unknown as {
           access_token: string;
+          refresh_token: string;
         };
         setToken(data.access_token);
+        setRefreshToken(data.refresh_token);
       });
   }, [router, token]);
 
@@ -82,6 +85,7 @@ const CallbackPage: NextPage = () => {
             <>
               <div className="max-w-2xl rounded-lg bg-white bg-opacity-20 p-4">
                 <p className="break-words text-white">{token}</p>
+            
               </div>
               <button
                 onClick={() => {
@@ -89,9 +93,26 @@ const CallbackPage: NextPage = () => {
                   setDisplayCopy(true);
                   setTimeout(() => setDisplayCopy(false), 2000);
                 }}
+                className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white">
+                Copy token
+              </button>
+            </>
+          )}
+          <h1 className="text-4xl text-white">Your Refresh Token:</h1>
+          {refreshToken && (
+            <>
+              <div className="max-w-2xl rounded-lg bg-white bg-opacity-20 p-4">
+                <p className="break-words text-white">{refreshToken}</p>
+              </div>
+              <button
+                onClick={() => {
+                  void navigator.clipboard.writeText(refreshToken);
+                  setDisplayCopy(true);
+                  setTimeout(() => setDisplayCopy(false), 2000);
+                }}
                 className="rounded bg-white p-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white"
               >
-                Copy token
+                Copy refresh token
               </button>
             </>
           )}
